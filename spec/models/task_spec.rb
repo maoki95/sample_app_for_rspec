@@ -10,26 +10,26 @@ RSpec.describe Task, type: :model do
       expect(task.errors).to be_empty
     end
     it 'is invalid without title' do 
-      without_task_title = build(:task,title: nil)
-      without_task_title.valid?
-      expect(without_task_title.errors[:title]).to include("can't be blank")
+      without_task_title = build(:task, title: "")
+      expect(without_task_title).to be_invalid
+      expect(without_task_title.errors[:title]).to eq ["can't be blank"]
     end
     it 'is invalid without status' do
-      without_task_status = build(:task,status: "")
-      without_task_status.valid?
-      expect(without_task_status.errors[:status]).to include("can't be blank")
+      without_task_status = build(:task,status: nil)
+      expect(without_task_status).to be_invalid
+      expect(without_task_status.errors[:status]).to eq ["can't be blank"]
     end
     it 'is invalid with a duplicate title' do 
     task = create(:task)
-    task2 = build(:task,title: task.title)
-    task2.valid?
-    expect(task2.errors[:title]).to include("has already been taken")
+    duplicate_task_title = build(:task, title: task.title)
+    expect(duplicate_task_title).to be_invalid
+    expect(duplicate_task_title.errors[:title]).to eq ["has already been taken"]
     end
     it 'is valid with another title' do 
     task = create(:task)
-    task2 = build(:task,title: "another_title")
-    task2.valid?
-    expect(task2.errors).to be_empty
+    another_task_title = build(:task,title: "another_title")
+    expect(another_task_title).to be_valid
+    expect(another_task_title.errors).to be_empty
     end
   end
 end
