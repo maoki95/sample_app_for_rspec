@@ -29,12 +29,12 @@ RSpec.describe "Tasks", type: :system do
     end
     context 'タスクの一覧ページにアクセス' do
       it '全てのユーザーのタスク情報が表示される' do
-        task = create(:task)
-        another_task = create(:task)
-        visit tasks_path
-        expect(page).to have_content task.title
-        expect(page).to have_content another_task.title
-        expect(current_path).to eq tasks_path
+        task_list = create_list(:task, 3)
+          visit tasks_path
+          expect(page).to have_content task_list[0].title
+          expect(page).to have_content task_list[1].title
+          expect(page).to have_content task_list[2].title
+          expect(current_path).to eq tasks_path
       end
     end
    end
